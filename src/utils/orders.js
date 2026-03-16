@@ -92,3 +92,12 @@ export const getWeekSales = async () => {
     return 0
   }
 }
+
+export const resetAllData = async () => {
+  try {
+    return await api.resetAllData()
+  } catch (error) {
+    console.error('Error resetting all data:', error)
+    throw error
+  }
+}

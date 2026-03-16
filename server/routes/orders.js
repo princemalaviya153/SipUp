@@ -24,6 +24,17 @@ const generateOrderId = () => {
   return `SIPUP-${String(orderCounter).padStart(3, '0')}`
 }
 
+// Reset all orders and revenue
+router.delete('/reset', async (req, res) => {
+  try {
+    await Order.deleteMany({})
+    orderCounter = 0
+    res.json({ message: 'All orders and revenue data have been reset successfully.' })
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+})
+
 // Create a new order
 router.post('/', async (req, res) => {
   try {

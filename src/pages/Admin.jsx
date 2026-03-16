@@ -1,15 +1,17 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
+import jsPDF from 'jspdf'
+import 'jspdf-autotable'
 import {
   getOrders, updateOrderStatus, getTodaySales, getWeekSales,
-  getEditedOrders, getCancelledOrders
+  getEditedOrders, getCancelledOrders, resetAllData
 } from '../utils/orders'
 import { api } from '../utils/api'
 import {
   LayoutDashboard, ClipboardList, Edit3, XCircle, UtensilsCrossed,
   History, LogOut, ChevronRight, Plus, Trash2, ToggleLeft, ToggleRight,
-  Search, Package, Eye, EyeOff, Menu as MenuIcon
+  Search, Package, Eye, EyeOff, Menu as MenuIcon, AlertTriangle, Download
 } from 'lucide-react'
 
 const TABS = [
@@ -273,6 +275,71 @@ const Admin = () => {
       console.error('Error updating order status:', error)
       alert('Failed to update order status')
     }
+  }
+
+  const handleResetData = async () => {
+    if (window.confirm('⚠️ WARNING: This will permanently delete ALL orders and reset all revenue to zero. This action cannot be undone!\n\nAre you absolutely sure you want to proceed?')) {
+      try {
+        setLoading(true)
+        await resetAllData()
+        await loadData()
+        alert('All order and revenue data has been successfully reset.')
+      } catch (error) {
+        console.error('Error resetting data:', error)
+        alert('Failed to reset data.')
+      } finally {
+        setLoading(false)
+      }
+    }
+  }
+
+  const handleExportPDF = () => {
+    if (orders.length === 0) {
+      alert('No orders available to export.')
+      return
+    }
+
+    const doc = new jsPDF()
+    
+    // Add Header
+    doc.setFontSize(20)
+    doc.setTextColor(238, 90, 36) // primary color
+    doc.text('SipUp - Comprehensive Order History', 14, 22)
+    doc.setFontSize(10)
+    doc.setTextColor(100)
+    doc.text(`Exported on: ${new Date().toLocaleString()}`, 14, 30)
+
+    const tableColumn = ["Order ID", "Customer", "Phone", "Total", "Status", "Date"]
+    const tableRows = []
+
+    orders.forEach(order => {
+      const orderDate = new Date(order.timestamp).toLocaleString('en-IN', {
+        day: '2-digit', month: 'short', year: 'numeric',
+        hour: '2-digit', minute: '2-digit'
+      })
+      
+      const orderData = [
+        order.orderId || order._id.substring(0, 8),
+        order.customerName,
+        order.phone,
+        `Rs: ${order.total}`,
+        order.status,
+        orderDate
+      ]
+      tableRows.push(orderData)
+    })
+
+    doc.autoTable({
+      head: [tableColumn],
+      body: tableRows,
+      startY: 35,
+      styles: { fontSize: 8, cellPadding: 3 },
+      headStyles: { fillColor: [238, 90, 36] }, // Primary color
+      alternateRowStyles: { fillColor: [250, 250, 250] }
+    })
+
+    const currentDate = new Date().toISOString().split('T')[0]
+    doc.save(`SipUp-Order-History-${currentDate}.pdf`)
   }
 
   // Menu Management Handlers
