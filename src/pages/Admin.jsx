@@ -665,6 +665,27 @@ const Admin = () => {
                   </div>
                 </div>
               </div>
+
+              {/* Danger Zone */}
+              <motion.div
+                className="mt-8 bg-red-50/50 border border-red-100 rounded-custom p-6 shadow-soft"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.6 }}
+              >
+                <h3 className="text-lg font-bold text-red-600 mb-2 flex items-center gap-2">
+                  <AlertTriangle className="w-5 h-5" /> Danger Zone
+                </h3>
+                <p className="text-sm text-red-800/70 mb-4">
+                  These actions are permanent and cannot be undone. Completely wipe out all historical and active orders and reset order numbers back to 0.
+                </p>
+                <button
+                  onClick={handleResetData}
+                  className="px-6 py-3 bg-red-600 text-white font-semibold rounded-custom hover:bg-red-700 transition-colors shadow-sm"
+                >
+                  Reset All Orders & Revenue Data
+                </button>
+              </motion.div>
             </div>
           )}
 
@@ -828,8 +849,14 @@ const Admin = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
             >
-              <div className="mb-4 flex items-center justify-between">
-                <p className="text-sm text-text/60">{orders.length} total orders</p>
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-xl font-bold font-heading text-text">All Orders</h2>
+                <button
+                  onClick={handleExportPDF}
+                  className="flex items-center gap-2 px-4 py-2 bg-text text-white rounded-custom font-semibold hover:bg-text/90 transition-colors text-sm"
+                >
+                  <Download className="w-4 h-4" /> Export PDF
+                </button>
               </div>
               <OrderTable orders={orders} showStatus={true} />
             </motion.div>
