@@ -9,7 +9,7 @@ import { api } from '../utils/api'
 import {
   LayoutDashboard, ClipboardList, Edit3, XCircle, UtensilsCrossed,
   History, LogOut, ChevronRight, Plus, Trash2, ToggleLeft, ToggleRight,
-  Search, Package, Eye, EyeOff
+  Search, Package, Eye, EyeOff, Menu as MenuIcon
 } from 'lucide-react'
 
 const TABS = [
@@ -396,9 +396,23 @@ const Admin = () => {
 
   return (
     <div className="min-h-screen bg-background flex">
+      {/* Mobile Overlay */}
+      <AnimatePresence>
+        {sidebarOpen && (
+          <motion.div
+            className="fixed inset-0 bg-black/50 z-20 md:hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSidebarOpen(false)}
+          />
+        )}
+      </AnimatePresence>
+
       {/* Sidebar */}
       <motion.aside
-        className={`bg-white shadow-lg flex flex-col ${sidebarOpen ? 'w-64' : 'w-16'} transition-all duration-300 fixed h-full z-20`}
+        className={`bg-white shadow-lg flex flex-col transition-all duration-300 fixed h-full z-30 top-0 left-0
+          ${sidebarOpen ? 'translate-x-0 w-64' : '-translate-x-full md:translate-x-0 w-64 md:w-16'}`}
         initial={false}
       >
         <div className="p-4 border-b flex items-center justify-between">
@@ -462,12 +476,19 @@ const Admin = () => {
       </motion.aside>
 
       {/* Main Content */}
-      <main className={`flex-1 transition-all duration-300 ${sidebarOpen ? 'ml-64' : 'ml-16'}`}>
-        <div className="p-6 md:p-8 max-w-7xl mx-auto">
+      <main className={`flex-1 transition-all duration-300 ${sidebarOpen ? 'md:ml-64' : 'md:ml-16'}`}>
+        <div className="p-6 md:p-8 max-w-7xl mx-auto pt-16 md:pt-8 min-h-screen">
           {/* Header */}
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold font-heading text-text">{currentTab?.label}</h1>
-            <p className="text-text/60 mt-1 text-sm">
+          <div className="mb-8 flex items-center gap-4">
+            <button
+              onClick={() => setSidebarOpen(true)}
+              className="md:hidden p-2 bg-white rounded-custom shadow-sm text-text"
+            >
+              <MenuIcon className="w-6 h-6" />
+            </button>
+            <div>
+              <h1 className="text-3xl font-bold font-heading text-text">{currentTab?.label}</h1>
+              <p className="text-text/60 mt-1 text-sm">
               {activeTab === 'dashboard' && 'Overview of your sales and orders'}
               {activeTab === 'active' && 'Orders currently being processed'}
               {activeTab === 'edited' && 'Orders modified by customers'}
@@ -475,6 +496,7 @@ const Admin = () => {
               {activeTab === 'menu' && 'Manage your menu items and availability'}
               {activeTab === 'history' && 'Complete history of all orders'}
             </p>
+            </div>
           </div>
 
           {/* Dashboard Tab */}

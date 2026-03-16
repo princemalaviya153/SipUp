@@ -198,7 +198,7 @@ const MyOrders = () => {
           animate={{ opacity: 1, y: 0 }}
         >
           <h2 className="text-lg font-semibold text-text mb-4">Track Your Orders</h2>
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3">
             <div className="flex items-center gap-2 flex-1">
               <span className="text-text font-semibold whitespace-nowrap">+91</span>
               <input
@@ -213,7 +213,7 @@ const MyOrders = () => {
             <button
               type="submit"
               disabled={loading}
-              className="px-6 py-3 bg-primary text-white rounded-custom font-semibold hover:bg-primary/90 transition-colors shadow-soft disabled:opacity-50 flex items-center gap-2"
+              className="w-full sm:w-auto px-6 py-3 bg-primary text-white rounded-custom font-semibold hover:bg-primary/90 transition-colors shadow-soft disabled:opacity-50 flex items-center justify-center gap-2"
             >
               <Search className="w-5 h-5" />
               {loading ? 'Searching...' : 'Search'}
@@ -358,16 +358,16 @@ const MyOrders = () => {
                             )}
 
                             {canEditOrCancel(order.status) && (
-                              <div className="pt-4 flex gap-3 border-t">
+                              <div className="pt-4 flex flex-col sm:flex-row gap-3 border-t">
                                 <button
                                   onClick={(e) => { e.stopPropagation(); handleEditStart(order) }}
-                                  className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-purple-100 text-purple-700 rounded-custom font-semibold hover:bg-purple-200 transition-colors"
+                                  className="flex-1 flex items-center justify-center gap-2 px-4 py-3 sm:py-2.5 bg-purple-100 text-purple-700 rounded-custom font-semibold hover:bg-purple-200 transition-colors"
                                 >
                                   <Edit3 className="w-4 h-4" /> Edit Order
                                 </button>
                                 <button
                                   onClick={(e) => { e.stopPropagation(); setCancellingOrder(order) }}
-                                  className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-red-100 text-red-700 rounded-custom font-semibold hover:bg-red-200 transition-colors"
+                                  className="flex-1 flex items-center justify-center gap-2 px-4 py-3 sm:py-2.5 bg-red-100 text-red-700 rounded-custom font-semibold hover:bg-red-200 transition-colors"
                                 >
                                   <XCircle className="w-4 h-4" /> Cancel Order
                                 </button>
@@ -510,7 +510,7 @@ const MyOrders = () => {
                   <span>New Total:</span>
                   <span className="text-primary">₹{getEditTotal()}</span>
                 </div>
-                <div className="flex gap-3">
+                <div className="flex flex-col sm:flex-row gap-3">
                   <button
                     onClick={() => setEditingOrder(null)}
                     className="flex-1 py-3 border-2 border-gray-300 rounded-custom font-semibold hover:bg-gray-50 transition-colors"
@@ -567,7 +567,7 @@ const MyOrders = () => {
                   rows="3"
                 />
 
-                <div className="flex gap-3">
+                <div className="flex flex-col sm:flex-row gap-3">
                   <button
                     onClick={() => { setCancellingOrder(null); setCancelReason('') }}
                     className="flex-1 py-3 border-2 border-gray-300 rounded-custom font-semibold hover:bg-gray-50 transition-colors"

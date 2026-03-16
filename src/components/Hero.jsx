@@ -78,25 +78,27 @@ const Hero = () => {
         >
           Fresh Fruits, Fresh Vibes
         </motion.p>
-        <motion.button
-          onClick={scrollToMenu}
-          className="bg-primary text-white px-8 py-4 rounded-custom text-lg font-semibold shadow-soft hover:scale-105 active:scale-95 transition-transform duration-200"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          Order Now
-        </motion.button>
-        <motion.button
-          onClick={() => navigate('/my-orders')}
-          className="ml-4 border-2 border-primary text-primary px-8 py-4 rounded-custom text-lg font-semibold hover:bg-primary hover:text-white active:scale-95 transition-all duration-200"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-        >
-          Track My Order
-        </motion.button>
+        <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
+          <motion.button
+            onClick={scrollToMenu}
+            className="w-full sm:w-auto bg-primary text-white px-8 py-4 rounded-custom text-lg font-semibold shadow-soft hover:scale-105 active:scale-95 transition-transform duration-200"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            Order Now
+          </motion.button>
+          <motion.button
+            onClick={() => navigate('/my-orders')}
+            className="w-full sm:w-auto border-2 border-primary text-primary px-8 py-4 rounded-custom text-lg font-semibold hover:bg-primary hover:text-white active:scale-95 transition-all duration-200"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+          >
+            Track My Order
+          </motion.button>
+        </div>
       </motion.div>
 
       {/* Scroll Indicator */}
