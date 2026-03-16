@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 import jsPDF from 'jspdf'
-import autoTable from 'jspdf-autotable'
+import 'jspdf-autotable'
 import {
   getOrders, updateOrderStatus, getTodaySales, getWeekSales,
   getEditedOrders, getCancelledOrders, resetAllData, cancelOrder
@@ -339,7 +339,7 @@ const Admin = () => {
       tableRows.push(orderData)
     })
 
-    autoTable(doc, {
+    doc.autoTable({
       head: [tableColumn],
       body: tableRows,
       startY: 35,
