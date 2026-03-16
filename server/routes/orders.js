@@ -181,7 +181,18 @@ router.patch('/:id', async (req, res) => {
   }
 })
 
-// Edit order (customer updates items)
+// Reset all orders and revenue
+router.delete('/reset', async (req, res) => {
+  try {
+    await Order.deleteMany({})
+    orderCounter = 0
+    res.json({ message: 'All orders have been successfully resetted' })
+  } catch (error) {
+    res.status(500).json({ error: error.message })
+  }
+})
+
+// Edit order
 router.put('/:id/edit', async (req, res) => {
   try {
     const { items, total } = req.body

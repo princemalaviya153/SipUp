@@ -166,4 +166,11 @@ export const api = {
     })
     return handleResponse(response)
   },
+
+  resetAllData: async () => {
+    const response = await fetch(`${API_BASE_URL}/orders/reset`, {
+      method: 'DELETE',
+    })
+    return handleResponse(response)
+  },
 }
