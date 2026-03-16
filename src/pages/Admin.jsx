@@ -11,7 +11,7 @@ import { api } from '../utils/api'
 import {
   LayoutDashboard, ClipboardList, Edit3, XCircle, UtensilsCrossed,
   History, LogOut, ChevronRight, Plus, Trash2, ToggleLeft, ToggleRight,
-  Search, Package, Eye, EyeOff, Menu as MenuIcon, AlertTriangle, Download
+  Search, Package, Eye, EyeOff, Menu as MenuIcon, AlertTriangle, Download, Star
 } from 'lucide-react'
 
 const TABS = [
@@ -435,6 +435,15 @@ const Admin = () => {
       await loadData()
     } catch (error) {
       alert('Failed to toggle availability: ' + error.message)
+    }
+  }
+
+  const handleToggleBestseller = async (id) => {
+    try {
+      await api.toggleMenuBestseller(id)
+      await loadData()
+    } catch (error) {
+      alert('Failed to toggle bestseller: ' + error.message)
     }
   }
 
@@ -862,6 +871,7 @@ const Admin = () => {
                       <th className="text-left p-3 text-text font-semibold text-sm">Name</th>
                       <th className="text-left p-3 text-text font-semibold text-sm">Price</th>
                       <th className="text-left p-3 text-text font-semibold text-sm">Category</th>
+                      <th className="text-left p-3 text-text font-semibold text-sm">Bestseller</th>
                       <th className="text-left p-3 text-text font-semibold text-sm">Available</th>
                       <th className="text-left p-3 text-text font-semibold text-sm">Actions</th>
                     </tr>
@@ -879,6 +889,20 @@ const Admin = () => {
                             }`}>
                             {item.category}
                           </span>
+                        </td>
+                        <td className="p-3">
+                          <button
+                            onClick={() => handleToggleBestseller(item.id)}
+                            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-custom text-sm font-medium transition-colors ${
+                              item.isBestseller
+                                ? 'bg-amber-100 text-amber-700 hover:bg-amber-200'
+                                : 'bg-gray-100 text-gray-500 hover:bg-amber-50'
+                            }`}
+                            title={item.isBestseller ? 'Remove Bestseller' : 'Mark as Bestseller'}
+                          >
+                            <Star className={`w-4 h-4 ${item.isBestseller ? 'fill-amber-500 text-amber-500' : ''}`} />
+                            {item.isBestseller ? 'Bestseller' : 'Mark'}
+                          </button>
                         </td>
                         <td className="p-3">
                           <button

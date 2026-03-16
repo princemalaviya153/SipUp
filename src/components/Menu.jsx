@@ -101,7 +101,7 @@ const Menu = () => {
             {(activeTab === 'juices' ? juicesAndShakes : fruitPlates).map((item) => (
               <motion.div
                 key={item.id}
-                className={`bg-white rounded-custom p-6 shadow-soft transition-all duration-300 ${
+                className={`relative bg-white rounded-custom p-6 shadow-soft transition-all duration-300 ${
                   item.isAvailable === false 
                     ? 'opacity-60 cursor-not-allowed grayscale-[0.5]' 
                     : 'hover:shadow-lg cursor-pointer'
@@ -112,6 +112,13 @@ const Menu = () => {
                   if (item.isAvailable !== false) handleItemClick(item)
                 }}
               >
+                {item.isBestseller && (
+                  <div className="absolute top-0 left-0 right-0 flex justify-center">
+                    <span className="bg-amber-400 text-white text-xs font-bold px-3 py-0.5 rounded-b-lg shadow flex items-center gap-1">
+                      ⭐ Bestseller
+                    </span>
+                  </div>
+                )}
                 <div
                   className="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center text-3xl"
                   style={{ backgroundColor: `${getFruitColor(item.baseFruit || 'Orange')}20` }}

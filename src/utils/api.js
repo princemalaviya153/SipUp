@@ -167,6 +167,13 @@ export const api = {
     return handleResponse(response)
   },
 
+  toggleMenuBestseller: async (id) => {
+    const response = await fetch(`${API_BASE_URL}/menu/${id}/bestseller`, {
+      method: 'PATCH',
+    })
+    return handleResponse(response)
+  },
+
   seedMenu: async () => {
     const response = await fetch(`${API_BASE_URL}/menu/seed`, {
       method: 'POST',

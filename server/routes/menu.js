@@ -149,6 +149,23 @@ router.patch('/:id/availability', async (req, res) => {
   }
 })
 
+// Toggle bestseller
+router.patch('/:id/bestseller', async (req, res) => {
+  try {
+    const item = await MenuItem.findOne({ id: parseInt(req.params.id) })
+    
+    if (!item) {
+      return res.status(404).json({ error: 'Menu item not found' })
+    }
+
+    item.isBestseller = !item.isBestseller
+    const updatedItem = await item.save()
+    res.json(updatedItem)
+  } catch (error) {
+    res.status(400).json({ error: error.message })
+  }
+})
+
 // Delete menu item
 router.delete('/:id', async (req, res) => {
   try {

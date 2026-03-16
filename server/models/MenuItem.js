@@ -30,6 +30,10 @@ const menuItemSchema = new mongoose.Schema({
   isAvailable: {
     type: Boolean,
     default: true
+  },
+  isBestseller: {
+    type: Boolean,
+    default: false
   }
 }, {
   timestamps: true
