@@ -4,6 +4,7 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import orderRoutes from './routes/orders.js'
 import menuRoutes from './routes/menu.js'
+import fruitRoutes from './routes/fruits.js'
 
 dotenv.config()
 
@@ -29,6 +30,7 @@ mongoose.connect(MONGODB_URI)
 // Routes
 app.use('/api/orders', orderRoutes)
 app.use('/api/menu', menuRoutes)
+app.use('/api/fruits', fruitRoutes)
 
 // Health check
 app.get('/api/health', (req, res) => {

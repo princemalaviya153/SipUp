@@ -1,26 +1,45 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X } from 'lucide-react'
 import { availableFruits, getFruitColor, premiumFruits } from '../utils/menuData'
+import { api } from '../utils/api'
 
 const CustomizationModal = ({ item, onClose, onAddToCart }) => {
   // For items without baseFruit (like Mix Fruit Juice or Customization Platters), start with empty selection
   const [selectedFruits, setSelectedFruits] = useState(item.baseFruit ? [item.baseFruit] : [])
   const [quantity, setQuantity] = useState(1)
   const [specialInstructions, setSpecialInstructions] = useState('')
+  const [dbFruits, setDbFruits] = useState([])
+
+  useEffect(() => {
+    const fetchFruits = async () => {
+      try {
+        const data = await api.getFruits(true)
+        if (data && data.length > 0) {
+          setDbFruits(data)
+        }
+      } catch (error) {
+        console.error('Error fetching fruits for customization:', error)
+      }
+    }
+    fetchFruits()
+  }, [])
+
+  const currentAvailableFruits = dbFruits.length > 0 ? dbFruits.map(f => f.name) : availableFruits
+  const currentPremiumFruits = dbFruits.length > 0 ? dbFruits.filter(f => f.isPremium).map(f => f.name) : premiumFruits
 
   const calculatePrice = () => {
     if (item.name === 'Mix Fruit Juice') {
-      const hasPremium = selectedFruits.some(fruit => premiumFruits.includes(fruit))
+      const hasPremium = selectedFruits.some(fruit => currentPremiumFruits.includes(fruit))
       return hasPremium ? 130 : 70
     }
     return item.basePrice
   }
 
   const toggleFruit = (fruit) => {
-    const isPremium = premiumFruits.includes(fruit)
-    const currentHasPremium = selectedFruits.some(f => premiumFruits.includes(f))
-    const currentHasRegular = selectedFruits.some(f => !premiumFruits.includes(f))
+    const isPremium = currentPremiumFruits.includes(fruit)
+    const currentHasPremium = selectedFruits.some(f => currentPremiumFruits.includes(f))
+    const currentHasRegular = selectedFruits.some(f => !currentPremiumFruits.includes(f))
 
     if (selectedFruits.includes(fruit)) {
       setSelectedFruits(selectedFruits.filter(f => f !== fruit))
@@ -50,7 +69,7 @@ const CustomizationModal = ({ item, onClose, onAddToCart }) => {
         alert('Please select fruits for Mix Fruit Juice')
         return
       }
-      const hasPremium = selectedFruits.some(fruit => premiumFruits.includes(fruit))
+      const hasPremium = selectedFruits.some(fruit => currentPremiumFruits.includes(fruit))
       if (hasPremium) {
         if (selectedFruits.length !== 3) {
           alert('Please select exactly 3 premium fruits')
@@ -124,13 +143,13 @@ const CustomizationModal = ({ item, onClose, onAddToCart }) => {
                   Regular Fruits
                 </h5>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                  {availableFruits.filter(fruit => !premiumFruits.includes(fruit)).map((fruit) => (
+                  {currentAvailableFruits.filter(fruit => !currentPremiumFruits.includes(fruit)).map((fruit) => (
                     <button
                       key={fruit}
                       onClick={() => toggleFruit(fruit)}
                       className={`p-4 rounded-custom border-2 transition-all ${selectedFruits.includes(fruit)
-                          ? 'border-primary bg-primary/10'
-                          : 'border-gray-200 hover:border-primary/50'
+                        ? 'border-primary bg-primary/10'
+                        : 'border-gray-200 hover:border-primary/50'
                         }`}
                       style={{
                         borderColor: selectedFruits.includes(fruit) ? getFruitColor(fruit) : undefined
@@ -171,13 +190,13 @@ const CustomizationModal = ({ item, onClose, onAddToCart }) => {
                   Premium Fruits
                 </h5>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                  {availableFruits.filter(fruit => premiumFruits.includes(fruit)).map((fruit) => (
+                  {currentAvailableFruits.filter(fruit => currentPremiumFruits.includes(fruit)).map((fruit) => (
                     <button
                       key={fruit}
                       onClick={() => toggleFruit(fruit)}
                       className={`p-4 rounded-custom border-2 transition-all ${selectedFruits.includes(fruit)
-                          ? 'border-primary bg-primary/10'
-                          : 'border-gray-200 hover:border-primary/50'
+                        ? 'border-primary bg-primary/10'
+                        : 'border-gray-200 hover:border-primary/50'
                         }`}
                       style={{
                         borderColor: selectedFruits.includes(fruit) ? getFruitColor(fruit) : undefined
@@ -243,8 +262,8 @@ const CustomizationModal = ({ item, onClose, onAddToCart }) => {
                 onClick={handleAddToCart}
                 disabled={selectedFruits.length === 0}
                 className={`flex-1 py-3 rounded-custom font-semibold transition-colors shadow-soft ${selectedFruits.length === 0
-                    ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                    : 'bg-primary text-white hover:bg-primary/90'
+                  ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                  : 'bg-primary text-white hover:bg-primary/90'
                   }`}
               >
                 Add to Cart - ₹{calculatePrice() * quantity}

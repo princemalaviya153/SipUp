@@ -237,6 +237,7 @@ const Admin = () => {
   const [todaySales, setTodaySales] = useState(0)
   const [weekSales, setWeekSales] = useState(0)
   const [menuItems, setMenuItems] = useState([])
+  const [fruits, setFruits] = useState([])
   const [loading, setLoading] = useState(false)
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const navigate = useNavigate()
@@ -245,6 +246,10 @@ const Admin = () => {
   const [showAddItem, setShowAddItem] = useState(false)
   const [editingItem, setEditingItem] = useState(null)
   const [newItem, setNewItem] = useState({ name: '', basePrice: '', category: 'juice', baseFruit: '', allowCustomization: false })
+
+  // Fruit management state
+  const [showAddFruit, setShowAddFruit] = useState(false)
+  const [newFruit, setNewFruit] = useState({ name: '', isPremium: false })
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -257,13 +262,14 @@ const Admin = () => {
   const loadData = async () => {
     try {
       setLoading(true)
-      const [allOrders, today, week, edited, cancelled, menu] = await Promise.all([
+      const [allOrders, today, week, edited, cancelled, menu, fruitsData] = await Promise.all([
         getOrders(),
         getTodaySales(),
         getWeekSales(),
         getEditedOrders(),
         getCancelledOrders(),
-        api.getMenuItems()
+        api.getMenuItems(),
+        api.getFruits()
       ])
       setOrders(allOrders)
       setActiveOrders(allOrders.filter(order =>
@@ -275,6 +281,7 @@ const Admin = () => {
       setTodaySales(today)
       setWeekSales(week)
       setMenuItems(menu)
+      setFruits(fruitsData)
     } catch (error) {
       console.error('Error loading data:', error)
     } finally {
@@ -444,6 +451,36 @@ const Admin = () => {
       await loadData()
     } catch (error) {
       alert('Failed to toggle bestseller: ' + error.message)
+    }
+  }
+
+  const handleToggleFruitAvailability = async (id) => {
+    try {
+      await api.toggleFruitAvailability(id)
+      await loadData()
+    } catch (error) {
+      alert('Failed to toggle fruit availability: ' + error.message)
+    }
+  }
+
+  const handleSeedFruits = async () => {
+    try {
+      await api.seedFruits()
+      await loadData()
+    } catch (error) {
+      alert('Failed to seed fruits: ' + error.message)
+    }
+  }
+
+  const handleAddFruit = async (e) => {
+    e.preventDefault()
+    try {
+      await api.addFruit(newFruit)
+      setNewFruit({ name: '', isPremium: false })
+      setShowAddFruit(false)
+      await loadData()
+    } catch (error) {
+      alert('Failed to add fruit: ' + error.message)
     }
   }
 
@@ -941,6 +978,134 @@ const Admin = () => {
                     ))}
                   </tbody>
                 </table>
+              </div>
+
+              {/* Fruits Management Table */}
+              <div className="mt-8 border-t pt-8">
+                <div className="flex justify-between items-center mb-6">
+                  <h3 className="text-lg font-bold text-text">Mix Fruit Juice Customization Options</h3>
+                  <div className="flex gap-2">
+                    {fruits.length === 0 && (
+                      <button
+                        onClick={handleSeedFruits}
+                        className="px-4 py-2 bg-blue-600 text-white rounded-custom font-semibold hover:bg-blue-700 transition-colors text-sm"
+                      >
+                        Initialize Fruits
+                      </button>
+                    )}
+                    <button
+                      onClick={() => setShowAddFruit(!showAddFruit)}
+                      className="flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-custom font-semibold hover:bg-primary/90 transition-colors"
+                    >
+                      <Plus className="w-4 h-4" /> Add Fruit
+                    </button>
+                  </div>
+                </div>
+
+                {/* Add Fruit Form */}
+                <AnimatePresence>
+                  {showAddFruit && (
+                    <motion.form
+                      onSubmit={handleAddFruit}
+                      className="bg-gray-50 rounded-custom p-6 mb-6"
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                    >
+                      <h3 className="text-lg font-bold mb-4 text-text">Add New Fruit</h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <input
+                          type="text"
+                          placeholder="Fruit Name (e.g. Mango)"
+                          value={newFruit.name}
+                          onChange={(e) => setNewFruit({ ...newFruit, name: e.target.value })}
+                          className="p-3 border-2 border-gray-200 rounded-custom focus:border-primary focus:outline-none"
+                          required
+                        />
+                        <div className="flex items-center gap-2 bg-white p-3 border-2 border-gray-200 rounded-custom">
+                          <input
+                            type="checkbox"
+                            id="isPremium"
+                            checked={newFruit.isPremium}
+                            onChange={(e) => setNewFruit({ ...newFruit, isPremium: e.target.checked })}
+                            className="w-4 h-4 text-primary"
+                          />
+                          <label htmlFor="isPremium" className="text-text font-medium text-sm">Make it Premium (₹130 category)</label>
+                        </div>
+                      </div>
+                      <div className="flex gap-3 mt-4">
+                        <button
+                          type="button"
+                          onClick={() => setShowAddFruit(false)}
+                          className="px-6 py-2 border-2 border-gray-300 rounded-custom font-semibold hover:bg-gray-50 transition-colors"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="submit"
+                          className="px-6 py-2 bg-primary text-white rounded-custom font-semibold hover:bg-primary/90 transition-colors"
+                        >
+                          Add Fruit
+                        </button>
+                      </div>
+                    </motion.form>
+                  )}
+                </AnimatePresence>
+
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead>
+                      <tr className="border-b bg-gray-50">
+                        <th className="text-left p-3 text-text font-semibold text-sm">Name</th>
+                        <th className="text-left p-3 text-text font-semibold text-sm">Category</th>
+                        <th className="text-left p-3 text-text font-semibold text-sm">Available</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {fruits.map((fruit) => (
+                        <tr key={fruit._id} className={`border-b hover:bg-gray-50 transition-colors ${!fruit.isAvailable ? 'opacity-50' : ''}`}>
+                          <td className="p-3 text-text text-sm font-medium">
+                            <div className="flex items-center gap-2">
+                              <div className="text-xl">
+                                {fruit.name === 'Watermelon' && '🍉'}
+                                {fruit.name === 'Orange' && '🍊'}
+                                {fruit.name === 'Grapes' && '🍇'}
+                                {fruit.name === 'Kiwi' && '🥝'}
+                                {fruit.name === 'Chikoo' && '🥭'}
+                                {fruit.name === 'Pineapple' && '🍍'}
+                                {fruit.name === 'Strawberry' && '🍓'}
+                                {fruit.name === 'Guava' && '🍈'}
+                                {fruit.name === 'Blueberry' && '🫐'}
+                              </div>
+                              {fruit.name}
+                            </div>
+                          </td>
+                          <td className="p-3">
+                            <span className={`px-2 py-1 rounded-full text-xs font-bold ${fruit.isPremium ? 'bg-purple-100 text-purple-700' : 'bg-green-100 text-green-700'
+                              }`}>
+                              {fruit.isPremium ? 'Premium' : 'Regular'}
+                            </span>
+                          </td>
+                          <td className="p-3">
+                            <button
+                              onClick={() => handleToggleFruitAvailability(fruit._id)}
+                              className={`flex items-center gap-2 px-3 py-1.5 rounded-custom text-sm font-medium transition-colors ${fruit.isAvailable !== false
+                                ? 'bg-green-100 text-green-700 hover:bg-green-200'
+                                : 'bg-red-100 text-red-700 hover:bg-red-200'
+                                }`}
+                            >
+                              {fruit.isAvailable !== false ? (
+                                <><ToggleRight className="w-4 h-4" /> Available</>
+                              ) : (
+                                <><ToggleLeft className="w-4 h-4" /> Unavailable</>
+                              )}
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </motion.div>
           )}

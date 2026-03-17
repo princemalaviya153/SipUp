@@ -174,16 +174,36 @@ export const api = {
     return handleResponse(response)
   },
 
-  seedMenu: async () => {
-    const response = await fetch(`${API_BASE_URL}/menu/seed`, {
+  // Fruits
+  getFruits: async (availableOnly = false) => {
+    const url = availableOnly 
+      ? `${API_BASE_URL}/fruits?available=true`
+      : `${API_BASE_URL}/fruits`
+    const response = await fetch(url)
+    return handleResponse(response)
+  },
+
+  addFruit: async (data) => {
+    const response = await fetch(`${API_BASE_URL}/fruits`, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
     })
     return handleResponse(response)
   },
 
-  resetAllData: async () => {
-    const response = await fetch(`${API_BASE_URL}/orders/reset`, {
-      method: 'DELETE',
+  toggleFruitAvailability: async (id) => {
+    const response = await fetch(`${API_BASE_URL}/fruits/${id}/availability`, {
+      method: 'PATCH',
+    })
+    return handleResponse(response)
+  },
+
+  seedFruits: async () => {
+    const response = await fetch(`${API_BASE_URL}/fruits/seed`, {
+      method: 'POST',
     })
     return handleResponse(response)
   },

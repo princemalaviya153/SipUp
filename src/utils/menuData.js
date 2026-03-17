@@ -32,7 +32,7 @@ export const fruitPlates = [
 
 export const availableFruits = [
   'Watermelon', 'Orange', 'Grapes', 'Kiwi', 'Chikoo', 
-  'Pineapple', 'Strawberry', 'Guava', 'Tender Coconut', 'Blueberry'
+  'Pineapple', 'Strawberry', 'Guava', 'Blueberry'
 ]
 
 export const premiumFruits = ['Kiwi', 'Strawberry', 'Blueberry']
