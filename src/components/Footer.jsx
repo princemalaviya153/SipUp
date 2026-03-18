@@ -19,7 +19,6 @@ const Footer = () => {
             <h4 className="text-lg font-semibold mb-4">Contact</h4>
             <p className="text-white/80 mb-2">📱 +91 8866006024 </p>
             <p className="text-white/80 mb-2">📱 +91 6353865836 </p>
-            <p className="text-white/80 mb-2">⏰ Open: 8AM - 12AM</p>
             <p className="text-white/80">📍 Changa, Gujarat</p>
           </div>
           <div>
@@ -31,7 +30,7 @@ const Footer = () => {
           </div>
         </motion.div>
         <div className="border-t border-white/20 mt-8 pt-8 text-center text-white/60">
-          <p>&copy; 2024 SipUp. All rights reserved.</p>
+          <p>&copy; 2026 SipUp. All rights reserved.</p>
         </div>
       </div>
     </footer>
