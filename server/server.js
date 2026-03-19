@@ -36,8 +36,12 @@ app.use('/api/settings', settingsRoutes)
 
 // Health check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'OK', message: 'SipUp API is running' })
-})
+  res.json({
+    status: 'OK',
+    message: 'Your API is running',
+    timestamp: new Date().toISOString()
+  });
+});
 
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`)
