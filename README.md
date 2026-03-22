@@ -25,9 +25,16 @@ SipUp provides a lightning-fast and seamless ordering experience for customers c
 - **Database:** MongoDB (via Mongoose ODM)
 
 ## 📸 Screenshots / Demo
-*(Add screenshots or a GIF here showcasing your vibrant UI, quick checkout process, and the Admin dashboard.)*
 
-- **Live Demo:** [Link to Live App](#) *(Placeholder - update with real link if deployed)*
+<img width="1902" height="869" alt="Screenshot 2026-03-22 161810" src="https://github.com/user-attachments/assets/299bcef9-d61a-47c2-ad91-c724146264e5" />
+<img width="1919" height="866" alt="Screenshot 2026-03-22 162302" src="https://github.com/user-attachments/assets/d1652c5d-5aa8-4d9f-9ba2-61d79a38adc4" />
+<img width="1902" height="867" alt="Screenshot 2026-03-22 162208" src="https://github.com/user-attachments/assets/cc8ccf3e-9467-45b0-9d77-8f3ab7f1320a" />
+<img width="1919" height="868" alt="Screenshot 2026-03-22 162242" src="https://github.com/user-attachments/assets/09197adf-6414-43f4-81c3-dd51cbdbbc95" />
+
+
+
+
+- **Live Demo:** [Link to Live App](https://sip-up-one.vercel.app/)
 
 ## ⚙️ Installation / Setup
 Follow these steps to run the project locally. A developer should be able to run this without any extra steps.
@@ -76,7 +83,7 @@ VITE_API_URL=http://localhost:5000/api
 **Backend (`server/.env` in server folder)**
 ```env
 PORT=5000
-MONGODB_URI=mongodb+srv://dev:dev@sipup.vyu5hra.mongodb.net/sipup  # Replace with your own secure MongoDB URI
+MONGODB_URI= # Replace with your own secure MongoDB URI
 ```
 
 ## 📂 Project Structure
@@ -121,7 +128,5 @@ SipUp/
 This project is licensed under the [MIT License](LICENSE).
 
 ## 👤 Author / Contact
-- **Name:** Prince Malaviya *(Update as needed)*
-- **Contact:** +91 8866006024 / +91 6353865836
-- **WhatsApp:** [Message directly](https://wa.me/918866006024)
-- **Instagram:** [@siip_upp](https://www.instagram.com/siip_upp?igsh=MTVobTA4dmQ1OTQ2NA==)
+- **Name:** Prince Malaviya
+- **Mail:** princemalaviya302@gmail.com
