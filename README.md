@@ -1,141 +1,127 @@
-# SipUp - Fresh Fruits, Fresh Vibes 🍉🍊🍍
+# 📌 SipUp - Fresh Fruits, Fresh Vibes 🍉🍊🍍
 
-A modern, mobile-first restaurant ordering website for fresh fruit juices, shakes, and plates. Built with React, TailwindCSS, and Framer Motion for buttery-smooth animations.
+A modern, mobile-first restaurant ordering application specialized in fresh fruit juices, shakes, and plates. 
 
-## Features
+## 📖 Description
+SipUp provides a lightning-fast and seamless ordering experience for customers craving fresh fruit items. Overcoming the hassle of traditional phone orders or clunky menus, SipUp offers a vibrant, highly responsive interface for instant add-to-cart functionality without requiring a login. It’s perfect for local juice bars, cafes, or college campus eateries seeking a streamlined order-to-pickup pipeline.
 
-- 🚀 **Lightning-fast ordering** - Complete checkout in under 30 seconds
-- 📱 **Mobile-first design** - Optimized for all devices
-- 🎨 **Vibrant UI** - Clean whites, fresh greens, and fruit-inspired colors
-- 🛒 **Smart cart** - Real-time updates with persistent storage
-- ⚡ **No login required** - Quick checkout for customers
-- 👨‍💼 **Admin dashboard** - Manage orders and track sales
-- ✨ **Smooth animations** - Framer Motion powered micro-interactions
-- 📊 **Order management** - Track orders from New → Preparing → Ready → Completed
+## 🚀 Features
+- **Lightning-fast Ordering:** Complete checkout in under 30 seconds.
+- **No Login Required:** Frictionless shopping experience for customers.
+- **Smart Cart & Checkout:** Real-time price calculation with persistent storage and smooth animations.
+- **Order Restrictions:** Smart constraints via backend admin controls (and frontend hostel delivery cutoffs).
+- **Admin Dashboard:** Fully protected dashboard to manage orders (New → Preparing → Ready → Completed) and track sales metrics.
+- **Mobile-First Design:** Fully responsive and optimized to look and feel like a modern native app.
+- **PWA Ready:** Installable web application for quick access.
 
-## Tech Stack
+## 🛠️ Tech Stack
+- **Frontend Framework:** React 18
+- **Build Tool:** Vite
+- **Styling:** TailwindCSS
+- **Animations:** Framer Motion
+- **Icons:** Lucide-React
+- **Routing:** React Router DOM
+- **Backend API:** Node.js with Express.js
+- **Database:** MongoDB (via Mongoose ODM)
 
-- **React 18** - UI framework
-- **Vite** - Build tool
-- **TailwindCSS** - Styling
-- **Framer Motion** - Animations
-- **React Router** - Navigation
-- **MongoDB** - Database (MongoDB Atlas)
-- **Express.js** - Backend API server
-- **Mongoose** - MongoDB ODM
-- **PWA Ready** - Installable web app
+## 📸 Screenshots / Demo
+*(Add screenshots or a GIF here showcasing your vibrant UI, quick checkout process, and the Admin dashboard.)*
 
-## Getting Started
+- **Live Demo:** [Link to Live App](#) *(Placeholder - update with real link if deployed)*
 
-### Installation
+## ⚙️ Installation / Setup
+Follow these steps to run the project locally. A developer should be able to run this without any extra steps.
 
-1. **Install frontend dependencies:**
-```bash
-npm install
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/your-username/SipUp.git
+   cd SipUp
+   ```
+
+2. **Install Frontend Dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Install Backend Dependencies:**
+   ```bash
+   cd server
+   npm install
+   cd ..
+   ```
+
+4. **Start the Development Servers:**
+   - Open a terminal for the backend:
+     ```bash
+     npm run server
+     # Alternatively: cd server && npm run dev
+     ```
+   - Open another terminal for the frontend:
+     ```bash
+     npm run dev
+     ```
+
+5. **Seed the Menu (Initial Setup):**
+   - After starting the server, visit `http://localhost:5000/api/menu/seed` in your browser to populate the database once.
+   - Access the main frontend app at `http://localhost:5173` (or the port specified by Vite).
+
+## 🔑 Environment Variables
+For the project to work, you must define environment variables.
+
+**Frontend (`.env` in root folder)**
+```env
+VITE_API_URL=http://localhost:5000/api
 ```
 
-2. **Install backend dependencies:**
-```bash
-cd server
-npm install
-cd ..
+**Backend (`server/.env` in server folder)**
+```env
+PORT=5000
+MONGODB_URI=mongodb+srv://dev:dev@sipup.vyu5hra.mongodb.net/sipup  # Replace with your own secure MongoDB URI
 ```
 
-### Development
-
-1. **Start the backend server (in one terminal):**
-```bash
-npm run server
-# or
-cd server && npm run dev
+## 📂 Project Structure
+```text
+SipUp/
+├── public/                 # Static assets
+├── server/                 # Node.js + Express Backend
+│   ├── models/             # Mongoose schemas
+│   ├── routes/             # API routes
+│   └── server.js           # Server entry point
+├── src/                    # Frontend React App
+│   ├── components/         # Reusable UI components (Hero, Cart, Menu, Footer)
+│   ├── context/            # Global state (CartContext)
+│   ├── pages/              # Main view components (Home, Admin, MyOrders)
+│   └── utils/              # API helpers and utilities
+├── .env                    # Environment variables
+└── package.json            # Frontend dependencies & scripts
 ```
 
-2. **Start the frontend (in another terminal):**
-```bash
-npm run dev
-```
+## 👥 User Roles
+- **Customer:** Can browse menus, customize items, manage their cart, and checkout instantly without authentication. Can also track their own orders.
+- **Admin:** Protected by login credentials. Can view active orders, update order statuses, toggle "ordering enabled" mode, and monitor historical sales.
 
-3. **Seed the menu items (one-time, after starting server):**
-Visit `http://localhost:5000/api/menu/seed` in your browser
+## 📌 Usage Guide
+- **For Customers:** Simply open the web page, click on any item to view details, optionally choose customizations, add it to your cart, and click checkout in the bottom-right floating cart button. Enter your name, phone, and delivery address to finalize the order.
+- **For Admins:** Navigate to `/admin`.
+  - Default Username: `admin`
+  - Default Password: `sipup123`
+  - From here, accept and progress orders through different stages to keep customers updated on delivery.
 
-Visit `http://localhost:3000` for the frontend
+## 🧠 Future Enhancements
+- **Payment Gateway Integration:** Implement Razorpay or Stripe for online payments.
+- **Push Notifications:** Alert customers directly when their order is ready for pickup or delivery.
+- **Advanced Analytics:** Data visualizations to chart popular items, user counts, and peak ordering times.
+- **User Authentication:** Optional customer accounts for saving favorite orders or earning loyalty points.
 
-### Build
+## 🐛 Known Issues
+- Currently, hostel delivery logic time restrictions are defined in the frontend component instead of global dynamic settings.
+- The `MONGODB_URI` currently points to a shared development cluster. This must be updated to a secure production cluster for real-world deployments.
 
-```bash
-npm run build
-```
+## 📄 License
+This project is licensed under the [MIT License](LICENSE).
 
-### Admin Access
-
-Navigate to `/admin` and login with:
-- Username: `admin`
-- Password: `sipup123`
-
-## MongoDB Setup
-
-The app uses MongoDB Atlas. See `MONGODB_SETUP.md` for detailed setup instructions.
-
-**Connection String:** `mongodb+srv://dev:dev@sipup.vyu5hra.mongodb.net/sipup`
-
-## Project Structure
-
-```
-src/
-├── components/       # Reusable UI components
-│   ├── Hero.jsx     # Hero section with animated background
-│   ├── Menu.jsx     # Menu grid with tabs
-│   ├── Cart.jsx     # Shopping cart sidebar
-│   ├── CustomizationModal.jsx  # Item customization
-│   └── Footer.jsx   # Footer with contact info
-├── pages/           # Page components
-│   ├── Home.jsx     # Main landing page
-│   └── Admin.jsx    # Admin dashboard
-├── context/         # React context
-│   └── CartContext.jsx  # Cart state management
-└── utils/           # Utility functions
-    ├── menuData.js  # Menu items data
-    └── orders.js    # Order management functions
-```
-
-## Design System
-
-- **Primary Color**: #FF6B6B (Watermelon)
-- **Secondary Color**: #4ECDC4 (Mint)
-- **Accent Color**: #FFE66D (Pineapple)
-- **Background**: #F8F9FA
-- **Text**: #2C3E50
-- **Fonts**: Poppins (headings), Inter (body)
-- **Border Radius**: 16px
-- **Shadows**: Soft 0 4px 20px rgba(0,0,0,0.08)
-
-## Features in Detail
-
-### Customer Flow
-1. Browse menu items in beautiful grid layout
-2. Click "Add to Cart" to customize (select fruits, quantity, special instructions)
-3. View cart from floating button
-4. Quick checkout (name, phone, payment mode)
-5. Confetti celebration on order success!
-
-### Admin Flow
-1. Login to admin dashboard
-2. View active orders with status management
-3. Update order status (New → Preparing → Ready → Completed)
-4. Track sales (today/week)
-5. View completed orders history
-
-## Browser Support
-
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
-
-## License
-
-MIT
-
----
-
-Made with ❤️ for fresh fruit lovers
+## 👤 Author / Contact
+- **Name:** Prince Malaviya *(Update as needed)*
+- **Contact:** +91 8866006024 / +91 6353865836
+- **WhatsApp:** [Message directly](https://wa.me/918866006024)
+- **Instagram:** [@siip_upp](https://www.instagram.com/siip_upp?igsh=MTVobTA4dmQ1OTQ2NA==)
