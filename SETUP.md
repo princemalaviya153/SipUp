@@ -59,6 +59,11 @@ All menu items from the requirements are included:
 - Border radius: 16px
 - Soft shadows throughout
 
-## Browser Support
+Browser Support
+-------------
 
 Works on all modern browsers (Chrome, Firefox, Safari, Edge)
+
+## Recent Updates
+
+- ✅ Fixed UI: Prevented Scroll To Top button from overlapping the Cart sidebar (z-index adjusted).
