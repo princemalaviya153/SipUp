@@ -17,11 +17,14 @@ app.use(cors())
 app.use(express.json())
 
 // MongoDB connection
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://dev:dev@sipup.vyu5hra.mongodb.net/sipup?retryWrites=true&w=majority'
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://princemalaviya153:prince123@sipup.topewdq.mongodb.net/sipup?appName=SipUp'
 
 mongoose.connect(MONGODB_URI)
   .then(() => {
     console.log('✅ Connected to MongoDB')
+
+    console.log('🗄️  DB name:', mongoose.connection.name);
+    console.log('🔗  Host:', mongoose.connection.host);
   })
   .catch((error) => {
     console.error('❌ MongoDB connection error:', error)
