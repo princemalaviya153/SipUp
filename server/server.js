@@ -17,7 +17,7 @@ app.use(cors())
 app.use(express.json())
 
 // MongoDB connection
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://princemalaviya153:prince123@sipup.topewdq.mongodb.net/sipup?appName=SipUp'
+const MONGODB_URI = process.env.MONGODB_URI
 
 mongoose.connect(MONGODB_URI)
   .then(() => {

@@ -44,8 +44,8 @@ router.delete('/reset', async (req, res) => {
 })
 
 // Telegram Notification
-const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN || '8460106493:AAH8ekMuZpZVhm_F-5fVSsIPMeOEHQnOwJc'
-const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID || '-1003731051926'
+const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN
+const TELEGRAM_CHAT_ID = process.env.TELEGRAM_CHAT_ID
 
 const sendTelegramNotification = async (order) => {
   try {
