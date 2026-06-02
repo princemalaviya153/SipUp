@@ -6,22 +6,28 @@ import { rateLimiter } from '../utils/ratelimit.js'
 const router = express.Router()
 
 // Get order counter
-let orderCounter = 0
-
-// Initialize order counter from latest order
-Order.findOne().sort({ orderId: -1 }).exec()
-  .then((latestOrder) => {
-    if (latestOrder) {
-      const match = latestOrder.orderId.match(/SIPUP-(\d+)/)
-      if (match) {
-        orderCounter = parseInt(match[1])
-      }
-    }
-  })
-  .catch((err) => console.error('Error initializing order counter:', err))
+let orderCounter = null
 
 // Generate order ID
-const generateOrderId = () => {
+const getNextOrderId = async () => {
+  if (orderCounter === null) {
+    try {
+      const latestOrder = await Order.findOne().sort({ orderId: -1 })
+      if (latestOrder) {
+        const match = latestOrder.orderId.match(/SIPUP-(\d+)/)
+        if (match) {
+          orderCounter = parseInt(match[1])
+        } else {
+          orderCounter = 0
+        }
+      } else {
+        orderCounter = 0
+      }
+    } catch (err) {
+      console.error('Error initializing order counter:', err)
+      orderCounter = 0
+    }
+  }
   orderCounter++
   return `SIPUP-${String(orderCounter).padStart(3, '0')}`
 }
@@ -104,8 +110,9 @@ router.post('/', async (req, res) => {
 
     const { customerName, phone, address, items, total, paymentMode } = req.body
 
+    const orderId = await getNextOrderId()
     const order = new Order({
-      orderId: generateOrderId(),
+      orderId,
       customerName,
       phone,
       address,
